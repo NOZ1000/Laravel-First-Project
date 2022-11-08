@@ -46,7 +46,7 @@ class ProductController extends Controller
         return redirect()
             ->route('products.index')
             ->with(['success' => "New product with id {$product->id} was created succesfully"]);
-        }
+    }
 
     public function show(Product $product) {
         return view('products.show')->with([
@@ -54,12 +54,12 @@ class ProductController extends Controller
         ]);
     }
 
-    public function edit($product) {
-        $product = Product::findOrFail($product);
+    public function edit(Product $product) {
         return view('products.edit')->with([
             'product' => $product
         ]);
     }
+
     public function update(Product $product) {
         $rules = [
             'title' => ['required', 'max:255'],
@@ -85,6 +85,7 @@ class ProductController extends Controller
             ->route('products.index')
             ->withSuccess("New product with id {$product->id} was edited succesfully");
     }
+
     public function destroy(Product $product) {
         $product->delete();
 
