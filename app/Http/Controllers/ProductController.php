@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\DB;
 use App\Product;
@@ -25,23 +26,8 @@ class ProductController extends Controller
         return view('products.create');
     }
 
-    public function store() {
-        $rules = [
-            'title' => ['required', 'max:255'],
-            'description' => ['required', 'max:1000'],
-            'price' => ['required', 'min:1'],
-            'stock' => ['required', 'min:0'],
-            'status' => ['required', 'in:available,unavailable'],
-        ];
-        request()->validate($rules);
-
-        if (request()->stock == 0 && request()->status == 'available') {
-            
-            return redirect()->back()->withInput(request()->all())->withErrors('Status can not be available when stock is 0');
-        }
-        
-        $product = Product::create(request()->all());
-
+    public function store(ProductRequest $request) {
+        $product = Product::create($request->validated());
 
         return redirect()
             ->route('products.index')
@@ -60,26 +46,9 @@ class ProductController extends Controller
         ]);
     }
 
-    public function update(Product $product) {
-        $rules = [
-            'title' => ['required', 'max:255'],
-            'description' => ['required', 'max:1000'],
-            'price' => ['required', 'min:1'],
-            'stock' => ['required', 'min:0'],
-            'status' => ['required', 'in:available,unavailable'],
-        ];
-        request()->validate($rules);
+    public function update(ProductRequest $request, Product $product) {
 
-        if (request()->stock == 0 && request()->status == 'available') {
-
-            return redirect()
-                ->back()
-                ->withInput(request()->all())
-                ->withErrors('Status can not be available when stock is 0');
-        }
-
-
-        $product->update(request()->all());
+        $product->update($request->validated());
 
         return redirect()
             ->route('products.index')
