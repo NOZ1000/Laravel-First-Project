@@ -7,11 +7,15 @@ use Illuminate\Http\Request;
 use App\Product;
 
 class ProductController extends Controller
-{
+{   
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+    }
+
     public function index() {
-        // $products = DB::table('products')->get();
         $products = Product::all();
-        // dd($products);
+
         return view('products.index')->with([
             'products' => $products,
         ]);
@@ -22,15 +26,6 @@ class ProductController extends Controller
     }
 
     public function store() {
-        // dd(request()->title, request()->description, request()->all());
-        // $product = Product::create([
-        //     'title' => request()->title,
-        //     'description' => request()->description,
-        //     'price' => request()->price,
-        //     'stock' => request()->stock,
-        //     'status' => request()->status,
-        // ]);
-
         $rules = [
             'title' => ['required', 'max:255'],
             'description' => ['required', 'max:1000'],
@@ -41,7 +36,6 @@ class ProductController extends Controller
         request()->validate($rules);
 
         if (request()->stock == 0 && request()->status == 'available') {
-            // session()->flash('error', 'Status can not be available when stock is 0');
             
             return redirect()->back()->withInput(request()->all())->withErrors('Status can not be available when stock is 0');
         }
@@ -49,21 +43,12 @@ class ProductController extends Controller
         $product = Product::create(request()->all());
 
 
-
-        // session()->flash('success', "New product with id {$product->id} was created");
         return redirect()
             ->route('products.index')
             ->with(['success' => "New product with id {$product->id} was created succesfully"]);
-        // return redirect()->route('products.index')->withSuccess("New product with id {$product->id} was created succesfully");
-    }
+        }
 
-    public function show($product) {
-        // $product = DB::table('products')->where('id', $product)->get();
-        // $product = Product::find($product);
-        // $product = Product::where('id', $product)->get();
-        // $product = Product::where('id', $product)->first();
-        $product = Product::findOrFail($product);
-        // dd($product);
+    public function show(Product $product) {
         return view('products.show')->with([
             'product' => $product
         ]);
@@ -75,7 +60,7 @@ class ProductController extends Controller
             'product' => $product
         ]);
     }
-    public function update($product) {
+    public function update(Product $product) {
         $rules = [
             'title' => ['required', 'max:255'],
             'description' => ['required', 'max:1000'],
@@ -86,7 +71,6 @@ class ProductController extends Controller
         request()->validate($rules);
 
         if (request()->stock == 0 && request()->status == 'available') {
-            // session()->flash('error', 'Status can not be available when stock is 0');
 
             return redirect()
                 ->back()
@@ -94,18 +78,14 @@ class ProductController extends Controller
                 ->withErrors('Status can not be available when stock is 0');
         }
 
-        $product = Product::findOrFail($product);
+
         $product->update(request()->all());
 
         return redirect()
             ->route('products.index')
             ->withSuccess("New product with id {$product->id} was edited succesfully");
-
-        
-        // redirect()->action('ProductController@index');
     }
-    public function destroy($product) {
-        $product = Product::findOrFail($product);
+    public function destroy(Product $product) {
         $product->delete();
 
         return redirect()
