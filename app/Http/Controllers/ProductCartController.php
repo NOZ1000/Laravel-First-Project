@@ -9,28 +9,6 @@ use Illuminate\Http\Request;
 class ProductCartController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Product $product)
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -39,44 +17,18 @@ class ProductCartController extends Controller
      */
     public function store(Request $request, Product $product)
     {
-        //
-    }
+        $cart = Cart::create();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @param  \App\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product, Cart $cart)
-    {
-        //
-    }
+        $quantity = $cart->products()
+            ->find($product->id)
+            ->pivot
+            ->quantity ?? 0;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @param  \App\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product, Cart $cart)
-    {
-        //
-    }
+        $cart->products()->attach([
+            $product->id => ['quantity' => $quantity + 1],
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @param  \App\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Product $product, Cart $cart)
-    {
-        //
+        return redirect()->back();
     }
 
     /**
