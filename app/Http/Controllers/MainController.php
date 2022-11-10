@@ -6,10 +6,13 @@ use App\Product;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
-{
+{   
     public function index() {
+        // $products = Product::where('status', 'available')->get();
+        $products = Product::available()->get();
+
         return view('welcome')->with([
-            'products' => Product::all(),
+            'products' => $products,
         ]);
     }
 }
