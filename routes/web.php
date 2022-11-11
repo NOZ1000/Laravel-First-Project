@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', 'MainController@index')->name('main');
-
 // Route::get('products', 'ProductController@index')->name('products.index');
 
 // Route::get('products/create', 'ProductController@create')->name('products.create');
@@ -29,9 +27,13 @@ Route::get('/', 'MainController@index')->name('main');
 
 // Route::delete('products/{product}', 'ProductController@destroy')->name('products.destroy');
 
+Route::get('/', 'MainController@index')->name('main');
+
 Route::resource('products', 'ProductController');
 
 Route::resource('carts', 'CartController')->only(['index']);
+
+Route::resource('orders', 'OrderController')->only(['create', 'store']);
 
 Route::resource('products.carts', 'ProductCartController')->only(['store', 'destroy']);
 
