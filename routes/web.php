@@ -29,8 +29,6 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', 'MainController@index')->name('main');
 
-Route::resource('products', 'ProductController');
-
 Route::resource('carts', 'CartController')->only(['index']);
 
 Route::resource('orders', 'OrderController')->only(['create', 'store']);

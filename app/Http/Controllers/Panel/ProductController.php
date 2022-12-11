@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Panel;
 
 use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 // use Illuminate\Support\Facades\DB;
 use App\Product;
 
 class ProductController extends Controller
 {   
-    public function __construct()
-    {
-        $this->middleware('auth')->except(['index', 'show']);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth')->except(['index', 'show']);
+    // }
 
     public function index() {
         $products = Product::all();

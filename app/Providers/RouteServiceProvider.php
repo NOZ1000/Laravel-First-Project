@@ -34,6 +34,7 @@ class RouteServiceProvider extends ServiceProvider
     public function map() {
         $this->mapApiRoutes();
         $this->mapWebRoutes();
+        $this->mapPanelRoutes();
     }
 
     protected function mapApiRoutes() {
@@ -42,9 +43,14 @@ class RouteServiceProvider extends ServiceProvider
             ->namespace($this->namespace)
             ->prefix('api')
             ->group(base_path('routes/api.php'));
+    }
 
-            
-        
+    protected function mapPanelRoutes() {
+
+        Route::middleware(['web', 'auth'])
+            ->namespace("{$this->namespace}\Panel")
+            ->prefix('panel')
+            ->group(base_path('routes/panel.php'));
     }
 
     protected function mapWebRoutes() {
