@@ -8,6 +8,17 @@ Index @endsection
     <h1>Order Details</h1>
 
     <h4 class="text-center">Grand Total: <strong>${{ $cart->total }}</strong></h4>
+    
+    <div class="text-center mb-3">
+
+        <form method="POST" 
+            action="{{ route('orders.store') }}" 
+            class="d-inline-flex">
+            @csrf
+        
+            <button class="btn btn-success" type="submit">Confirm Order</button>
+        </form>
+    </div>
 
     <div class="table-responsive">
         <table class="table table-striped">
