@@ -9,6 +9,7 @@ class MainController extends Controller
 {   
     public function index() {
         // $products = Product::where('status', 'available')->get();
+        // $products = Product::available()->get();
         $products = Product::available()->get();
 
         return view('welcome')->with([

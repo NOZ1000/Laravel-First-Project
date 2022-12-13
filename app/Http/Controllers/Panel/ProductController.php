@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 // use Illuminate\Support\Facades\DB;
 use App\Product;
+use App\Scopes\AvailableScope;
 
 class ProductController extends Controller
 {   
@@ -16,7 +17,7 @@ class ProductController extends Controller
     // }
 
     public function index() {
-        $products = Product::all();
+        $products = Product::withoutGlobalScope(AvailableScope::class)->get();
 
         return view('products.index')->with([
             'products' => $products,
