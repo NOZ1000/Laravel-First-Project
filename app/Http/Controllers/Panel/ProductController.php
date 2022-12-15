@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 // use Illuminate\Support\Facades\DB;
 use App\PanelProduct;
 use App\Scopes\AvailableScope;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {   
@@ -17,7 +18,8 @@ class ProductController extends Controller
     // }
 
     public function index() {
-        $products = PanelProduct::all();
+        // DB::connection()->enableQueryLog();
+        $products = PanelProduct::without('images')->get();
 
         return view('products.index')->with([
             'products' => $products,

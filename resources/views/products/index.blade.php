@@ -46,4 +46,5 @@ Index @endsection
         </table>
     </div>
     @endif
+    {{-- @dd(\DB::getQueryLog()) --}}
 @endsection
