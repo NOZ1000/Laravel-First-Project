@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Cart;
 use App\Product;
 use App\Services\CartService;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 
@@ -32,6 +33,12 @@ class ProductCartController extends Controller
             ->find($product->id)
             ->pivot
             ->quantity ?? 0;
+
+        if ($product->stock < $quantity + 1) {
+            throw  ValidationException::withMessages([
+                'cart' => "There not enough stock for the quantity you required of {$product->title}",
+            ]);
+        }
 
         $cart->products()->syncWithoutDetaching([
             $product->id => ['quantity' => $quantity + 1],
