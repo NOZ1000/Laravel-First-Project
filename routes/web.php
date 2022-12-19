@@ -27,15 +27,22 @@ use Illuminate\Support\Facades\Auth;
 
 // Route::delete('products/{product}', 'ProductController@destroy')->name('products.destroy');
 
-Route::get('/', 'MainController@index')->name('main');
+Route::get('/', 'MainController@index')
+    ->name('main');
 
-Route::resource('carts', 'CartController')->only(['index']);
+Route::resource('carts', 'CartController')
+    ->only(['index']);
 
-Route::resource('orders', 'OrderController')->only(['create', 'store']);
+Route::resource('orders', 'OrderController')
+    ->only(['create', 'store'])
+    ->middleware(['verified']);
 
-Route::resource('products.carts', 'ProductCartController')->only(['store', 'destroy']);
+Route::resource('products.carts', 'ProductCartController')
+    ->only(['store', 'destroy']);
 
-Route::resource('orders.payments', 'OrderPaymentController')->only(['store', 'create']);
+Route::resource('orders.payments', 'OrderPaymentController')
+    ->only(['store', 'create'])
+    ->middleware(['verified']);
 
 Auth::routes([
     'verify' => true,
