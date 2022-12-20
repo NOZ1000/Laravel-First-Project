@@ -4,5 +4,9 @@
 Show @endsection
 
 @section('content')
-    @include('components.product-card')
+    <div class="row justify-content-center">
+        <div class="col-4">
+            @include('components.product-card')
+        </div>
+    </div>
 @endsection
