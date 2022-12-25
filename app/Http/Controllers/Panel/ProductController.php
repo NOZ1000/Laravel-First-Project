@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Image;
 // use Illuminate\Support\Facades\DB;
 use App\PanelProduct;
+use Illuminate\Support\Facades\File;
 use App\Scopes\AvailableScope;
 use Illuminate\Support\Facades\DB;
 
@@ -32,6 +34,11 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request) {
         $product = PanelProduct::create($request->validated());
+        
+        foreach ($request->images as $image ) {
+            $product->images()->create([
+                'path' => 'images/' . $image->store('products', 'images')]);
+        }
 
         return redirect()
             ->route('products.index')
@@ -53,6 +60,20 @@ class ProductController extends Controller
     public function update(ProductRequest $request, PanelProduct $product) {
 
         $product->update($request->validated());
+
+        if ($request->hasFile('images')) {
+            foreach ($product->images as $image ) {
+                $path = storage_path("app/public/{$image->path}");
+                File::delete($path);
+                $image->delete();
+            }
+            
+            foreach ($request->images as $image ) {
+                $product->images()->create([
+                    'path' => 'images/' . $image->store('products', 'images')]);
+            }
+    
+        }
 
         return redirect()
             ->route('products.index')

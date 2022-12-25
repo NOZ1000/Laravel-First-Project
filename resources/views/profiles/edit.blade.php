@@ -62,11 +62,11 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label class="col-md-4 col-form-label text-md-end">{{ __('Image') }}</label>
+                            <label class="col-md-4 col-form-label text-md-end">{{ __('Images') }}</label>
 
                             <div class="col-md-6">
                                 <div class="custom-file">
-                                    <input type="file" name="image" accept="images/*" class="custom-file-input">
+                                    <input type="file" name="image" accept="image/*" class="custom-file-input">
                                     <label class="custom-file-lable">
                                         Profile Image...
                                     </label>
